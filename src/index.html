@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reed-Muller RPA Decoder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div id="visualizer">
+        <header>
+            <h1>Reed-Muller RPA Decoder Visualizer</h1>
+            <p>Visualizing Algorithm 1 (BSC version) for \(RM(3, 2)\)</p>
+        </header>
+
+        <section id="params">
+            <h2>Parameters</h2>
+            <div class="param-grid">
+                <div class="param-card">
+                    <h3>Code Properties</h3>
+                    <p>Code: \(RM(m=3, r=2)\)</p>
+                    <p>Length: \(n = 2^m = 8\)</p>
+                    <p>Dimension: \(k = \binom{3}{0} + \binom{3}{1} + \binom{3}{2} = 1+3+3 = 7\)</p>
+                    <p>Minimum Distance: \(d = 2^{m-r} = 2^1 = 2\)</p>
+                </div>
+                <div class="param-card">
+                    <h3>Channel Information</h3>
+                    <p>Transmitted Codeword: \(c = (00000000)\)</p>
+                    <p>Channel: BSC with error at position \(z=(010)\) (index 2)</p>
+                    <p>Max Iterations: \(N_{max} = 1\)</p>
+                </div>
+            </div>
+            
+            <div class="input-section">
+                <h3>Input Vector Configuration</h3>
+                <div class="vector-input">
+                    <label for="receivedVector">Received Vector:</label>
+                    <div class="bit-inputs" id="vectorInputs">
+                        <input type="number" min="0" max="1" value="0" class="bit-input">
+                        <input type="number" min="0" max="1" value="0" class="bit-input">
+                        <input type="number" min="0" max="1" value="1" class="bit-input">
+                        <input type="number" min="0" max="1" value="0" class="bit-input">
+                        <input type="number" min="0" max="1" value="0" class="bit-input">
+                        <input type="number" min="0" max="1" value="0" class="bit-input">
+                        <input type="number" min="0" max="1" value="0" class="bit-input">
+                        <input type="number" min="0" max="1" value="0" class="bit-input">
+                    </div>
+                </div>
+                <div class="vector-display">
+                    <p>Current vector: <span class="vector" id="currentVectorDisplay">00100000</span></p>
+                </div>
+                <div class="nmax-input">
+                    <label for="nmaxInput">Max Iterations (Nₘₐₓ):</label>
+                    <input type="number" id="nmaxInput" min="1" max="10" value="1" class="number-input">
+                </div>
+            </div>
+            </section>
+
+        <button id="startButton" class="primary-button">Run Visualization </button>
+        <div class="algo-explanation">
+            <details>
+                <summary>Algorithm Explanation</summary>
+                <div class="explanation-content">
+                    <h3>Reed-Muller Codes and RPA Decoding</h3>
+                    <p>The RPA (Recursive Projection Aggregation) algorithm decodes Reed-Muller codes through these steps:</p>
+                    <ol>
+                        <li><strong>Projection:</strong> Project received vector \(y\) onto cosets of \(B_i=\{0, z_i\}\) for each non-zero vector \(z_i\)</li>
+                        <li><strong>Recursive Decode:</strong> Decode each projection using a simpler decoder (FHT for base case)</li>
+                        <li><strong>Aggregation:</strong> Combine decoded results using majority vote to estimate the codeword</li>
+                        <li><strong>Iteration:</strong> Repeat until convergence or max iterations reached</li>
+                    </ol>
+                    <p>The visualization shows a single iteration of this process for \(RM(3,2)\) code.</p>
+                </div>
+            </details>
+        </div>
+
+        <div id="steps">
+            <!-- Visualization here from js -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
