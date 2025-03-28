@@ -1,34 +1,33 @@
-name: Deploy Application
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build the application
-        run: npm run build
-
-      - name: Deploy to Hosting Service
-        run: |
-          echo "Deploying to your hosting service..."
-          # Add your deployment commands here, e.g., for Vercel or Netlify
-          # npm run deploy or any other command specific to your hosting service
-
-      - name: Notify Deployment Success
-        run: echo "Deployment completed successfully!"
+          path: 'src'
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
